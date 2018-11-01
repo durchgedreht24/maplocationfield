@@ -1,10 +1,10 @@
 <?php
- 
+
 	require_once(CORE . '/class.cacheable.php');
 	require_once(EXTENSIONS . '/maplocationfield/extension.driver.php');
 
 	Class fieldMapLocation extends Field{
-	
+
 		private $_geocode_cache_expire = 60; // minutes
 
 		// defaults used when user doesn't enter defaults when adding field to section
@@ -120,7 +120,7 @@
 			$label = Widget::Label('Default Zoom Level');
 			$label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][default_zoom]', $this->get('default_zoom')));
 			$wrapper->appendChild($label);
-			
+
 			$label = Widget::Label('Google Maps API Key');
 			$label->appendChild(Widget::Input('fields['.$this->get('sortorder').'][api_key]', $this->get('api_key')));
 			$wrapper->appendChild($label);
@@ -146,7 +146,7 @@
 			$fields['default_location_coords'] = self::__geocodeAddress($fields['default_location']);
 
 			if(!$fields['default_zoom']) $fields['default_zoom'] = $this->_default_zoom;
-			
+
 			if(!$fields['api_key']) $fields['api_key'] = $this->get('api_key');
 
 			return FieldManager::saveSettings($id, $fields);
@@ -233,7 +233,7 @@
 			));
 			$field->appendChild($map);
 
-			if (count($this->_filter_origin['latitude']) > 0) {
+			if (array_key_exists('latitude', $this->_filter_origin) && count($this->_filter_origin['latitude']) > 0) {
 				$distance = new XMLElement('distance');
 				$distance->setAttribute('from', $this->_filter_origin['latitude'] . ',' . $this->_filter_origin['longitude']);
 				$distance->setAttribute('distance', extension_maplocationfield::geoDistance($this->_filter_origin['latitude'], $this->_filter_origin['longitude'], $data['latitude'], $data['longitude'], $this->_filter_origin['unit']));
@@ -349,7 +349,7 @@
 			$label->appendChild(Widget::Input('fields['.$this->get('element_name').'][centre]', null, 'text'));
 
 			$fieldset->appendChild($label);
-			
+
 			$label = Widget::Label($this->get('label') . ' ' . __('Map Zoom'));
 			$label->appendChild(Widget::Input('fields['.$this->get('element_name').'][zoom]', null, 'text'));
 
